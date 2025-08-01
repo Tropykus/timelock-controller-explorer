@@ -14,14 +14,14 @@ env:
   - variable: SIGNATURE_DATABASE
     value: https://sig.eth.samczsun.com/
   - variable: NEXT_PUBLIC_URQL_ENDPOINT_MAINNET
-    value: ""
+    value: https://your-mainnet-endpoint.com
   - variable: NEXT_PUBLIC_URQL_ENDPOINT_SEPOLIA
-    value: ""
+    value: https://your-sepolia-endpoint.com
   - variable: NEXT_PUBLIC_GA_ID
     value: G-0000000000
-  #   availability:
-  #     - BUILD
-  #     - RUNTIME
+    availability:
+      - BUILD
+      - RUNTIME
 
   # Grant access to secrets in Cloud Secret Manager.
   # See https://firebase.google.com/docs/app-hosting/configure#secret-parameters
