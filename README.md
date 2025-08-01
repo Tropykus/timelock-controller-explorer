@@ -49,10 +49,9 @@ Create a `.env.local` file with the following variables:
 
 ```env
 # Required: Subgraph endpoints
-NEXT_PUBLIC_URQL_ENDPOINT_MAINNET=https://api.studio.thegraph.com/query/your-mainnet-subgraph
-NEXT_PUBLIC_URQL_ENDPOINT_SEPOLIA=https://api.studio.thegraph.com/query/your-sepolia-subgraph
-NEXT_PUBLIC_URQL_ENDPOINT_ROOTSTOCK=https://api.studio.thegraph.com/query/46125/access-control-rootstock/version/latest
-
+NEXT_PUBLIC_URQL_ENDPOINT_MAINNET=<YOUR SUBGRAPH ENDPOINT>
+NEXT_PUBLIC_URQL_ENDPOINT_SEPOLIA=<YOUR SUBGRAPH ENDPOINT>
+NEXT_PUBLIC_URQL_ENDPOINT_ROOTSTOCK=<YOUR SUBGRAPH ENDPOINT>
 # Required: WalletConnect Project ID (get from https://cloud.walletconnect.com)
 NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=your_project_id
 
