@@ -26,6 +26,6 @@ env:
   # Grant access to secrets in Cloud Secret Manager.
   # See https://firebase.google.com/docs/app-hosting/configure#secret-parameters
   - variable: NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
-    secret: NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
+    secret: projects/timelock-explorer/secrets/NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
   - variable: NEXT_PUBLIC_URQL_ENDPOINT_ROOTSTOCK
-    secret: NEXT_PUBLIC_URQL_ENDPOINT_ROOTSTOCK
+    secret: projects/timelock-explorer/secrets/NEXT_PUBLIC_URQL_ENDPOINT_ROOTSTOCK
