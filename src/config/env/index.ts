@@ -4,10 +4,14 @@ const urqlEndpoint = {
   rootstock: process.env.NEXT_PUBLIC_URQL_ENDPOINT_ROOTSTOCK || "",
 };
 
+const timelockEndpoint = {
+  rootstock: process.env.NEXT_PUBLIC_URQL_ENDPOINT_ROOTSTOCK || "",
+};
+
 const walletConnectcId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!;
 
 const signatureDatabase = process.env.NEXT_PUBLIC_SIGNATURE_DATABASE!;
 
 const gaId = process.env.NEXT_PUBLIC_GA_ID!;
 
-export { urqlEndpoint, walletConnectcId, signatureDatabase, gaId };
+export { urqlEndpoint, timelockEndpoint, walletConnectcId, signatureDatabase, gaId };

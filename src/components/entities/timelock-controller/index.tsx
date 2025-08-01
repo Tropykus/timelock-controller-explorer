@@ -8,7 +8,9 @@ import Address from "@/components/address";
 import { useFavorites } from "@/providers/favorites";
 import { useEntities } from "@/providers/entities";
 import { useTimelockController } from "@/hooks/use-timelock-controller";
+import { useTimelockOperations } from "@/hooks/use-timelock-operations";
 import Account from "../as/account";
+import OperationsList from "./operations-list";
 
 interface Props extends ComponentProps<typeof Card> {
   depth: number;
@@ -27,6 +29,7 @@ const TimelockController: FC<Props> = ({
 }) => {
   const { isTimelockController, isLoading, proposerRole, executorRole, cancellerRole, minDelay } = 
     useTimelockController(address);
+  const { operations, loading: operationsLoading } = useTimelockOperations();
 
   const { splice } = useEntities();
   const favorites = useFavorites();
@@ -132,12 +135,10 @@ const TimelockController: FC<Props> = ({
                   </Flex>
                 </Tabs.Content>
                 <Tabs.Content value="operations">
-                  <Box>
-                    <Text size="2" color="gray">
-                      Operation history and pending operations would be displayed here.
-                      This requires additional contract calls to fetch operation data.
-                    </Text>
-                  </Box>
+                  <OperationsList 
+                    operations={operations} 
+                    isLoading={operationsLoading}
+                  />
                 </Tabs.Content>
               </Box>
             </Tabs.Root>
