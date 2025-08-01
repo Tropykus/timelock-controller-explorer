@@ -39,6 +39,8 @@ enum EntityPrefix {
   AccessManagerTargetFunction = "fn",
   AccessManagerRole = "role",
   AccessManagerOperation = "op",
+  TimelockController = "timelock",
+  TimelockOperation = "tlop",
 }
 
 export type URLSafeId = `${EntityPrefix}-${string}`;
@@ -65,12 +67,19 @@ const toPrefix = (type: EntityInstance["type"]): EntityPrefix => {
       return EntityPrefix.AccessManagerRoleMember;
     case AddressEntity.AccessManagerTarget:
       return EntityPrefix.AccessManagerTarget;
+    case AddressEntity.TimelockController:
+      return EntityPrefix.TimelockController;
     case Entity.AccessManagerTargetFunction:
       return EntityPrefix.AccessManagerTargetFunction;
     case Entity.AccessManagerRole:
       return EntityPrefix.AccessManagerRole;
     case Entity.AccessManagerOperation:
       return EntityPrefix.AccessManagerOperation;
+    case Entity.TimelockOperation:
+      return EntityPrefix.TimelockOperation;
+    default:
+      const _exhaustiveCheck: never = type;
+      throw new Error(`Unhandled entity type: ${_exhaustiveCheck}`);
   }
 };
 
@@ -84,12 +93,19 @@ const fromPrefix = (prefix: EntityPrefix): EntityInstance["type"] => {
       return AddressEntity.AccessManagerRoleMember;
     case EntityPrefix.AccessManagerTarget:
       return AddressEntity.AccessManagerTarget;
+    case EntityPrefix.TimelockController:
+      return AddressEntity.TimelockController;
     case EntityPrefix.AccessManagerTargetFunction:
       return Entity.AccessManagerTargetFunction;
     case EntityPrefix.AccessManagerRole:
       return Entity.AccessManagerRole;
     case EntityPrefix.AccessManagerOperation:
       return Entity.AccessManagerOperation;
+    case EntityPrefix.TimelockOperation:
+      return Entity.TimelockOperation;
+    default:
+      const _exhaustiveCheck: never = prefix;
+      throw new Error(`Unhandled entity prefix: ${_exhaustiveCheck}`);
   }
 };
 

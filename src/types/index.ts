@@ -5,12 +5,14 @@ export enum AddressEntity {
   AccessManaged = "Access Managed",
   AccessManagerTarget = "Target",
   AccessManagerRoleMember = "Role member",
+  TimelockController = "Timelock Controller",
 }
 
 export enum Entity {
   AccessManagerTargetFunction = "Function",
   AccessManagerRole = "Role",
   AccessManagerOperation = "Operation",
+  TimelockOperation = "Timelock Operation",
 }
 
 export type SupportedChain = (typeof chains)[number];

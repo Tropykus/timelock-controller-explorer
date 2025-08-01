@@ -10,6 +10,7 @@ import Sidebar from "@/components/sidebar";
 import { EntitiesProvider } from "@/providers/entities";
 import type { Metadata } from 'next'
 import { title, description } from "@/config/site";
+import { chains } from "@/config/chains";
 
 type Props = {
   children: ReactNode;
@@ -18,14 +19,29 @@ type Props = {
   };
 };
  
-export async function generateMetadata(
-  { params }: Props
-): Promise<Metadata> {
-  return {
-    title: title + ' for ' + params.chainId,
-    description: description.slice(0,-1) + ' for ' + params.chainId + '.',
-  }
-}
+// Temporarily disable dynamic metadata to fix hydration error
+// export async function generateMetadata(
+//   { params }: Props
+// ): Promise<Metadata> {
+//   // Convert chainId to number for comparison
+//   const chainId = Number(params.chainId);
+  
+//   // Find the chain by ID
+//   const chain = chains.find(({ definition }) => definition.id === chainId);
+  
+//   // Use chain name or fallback to chain ID
+//   const chainName = chain?.definition.name || `Chain ${chainId}`;
+  
+//   const pageTitle = `${title} for ${chainName}`;
+//   const pageDescription = `${description.slice(0,-1)} for ${chainName}.`;
+  
+//   return {
+//     title: {
+//       absolute: pageTitle,
+//     },
+//     description: pageDescription,
+//   }
+// }
 
 const ExplorerLayout: FC<Props> = ({ children, params: { chainId } }) => {
   return (

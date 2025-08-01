@@ -74,6 +74,10 @@ const Content: FC<Props> = ({ onNavigate = () => {} }) => {
     () => getFavorites(Entity.AccessManagerTargetFunction),
     [getFavorites]
   );
+  const timelockControllerFavorites = useMemo(
+    () => getFavorites(AddressEntity.TimelockController),
+    [getFavorites]
+  );
 
   const isEmpty = useMemo(
     () =>
@@ -82,7 +86,8 @@ const Content: FC<Props> = ({ onNavigate = () => {} }) => {
       accessManagerRoleFavorites.length == 0 &&
       accessManagerRoleMemberFavorites.length == 0 &&
       accessManagerTargetFavorites.length == 0 &&
-      accessManagerTargetFunctionFavorites.length == 0,
+      accessManagerTargetFunctionFavorites.length == 0 &&
+      timelockControllerFavorites.length == 0,
 
     [
       accessManagerFavorites,
@@ -91,6 +96,7 @@ const Content: FC<Props> = ({ onNavigate = () => {} }) => {
       accessManagerRoleMemberFavorites,
       accessManagerTargetFavorites,
       accessManagerTargetFunctionFavorites,
+      timelockControllerFavorites,
     ]
   );
 
@@ -437,6 +443,39 @@ const Content: FC<Props> = ({ onNavigate = () => {} }) => {
               </Button>
             );
           }}
+        />
+      )}
+      {timelockControllerFavorites.length > 0 && (
+        <FavoritesSection
+          name="Timelock Controllers"
+          data={timelockControllerFavorites}
+          onRender={([displayName, id]) => (
+            <Button
+              key={`${AddressEntity.TimelockController}-${id}`}
+              my="1"
+              variant="ghost"
+              color="gray"
+              className="w-full"
+              onClick={() =>
+                clearAndPushNav({
+                  type: AddressEntity.TimelockController,
+                  id,
+                })
+              }
+            >
+              <Address
+                p="1"
+                width="100%"
+                key={displayName}
+                hidePopup
+                addreth={{
+                  actions: "none",
+                  shortenAddress: 6,
+                  address: id as AddressType,
+                }}
+              />
+            </Button>
+          )}
         />
       )}
     </>

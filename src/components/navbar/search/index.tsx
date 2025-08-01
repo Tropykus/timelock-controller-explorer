@@ -23,6 +23,7 @@ import { ACCESS_MANAGER_ROLE_FRAGMENT } from "@/components/role/requests";
 import { useEntities } from "@/providers/entities";
 import { AddressEntity } from "@/types";
 import { EntityInstance } from "@/providers/entities/provider";
+import { useTimelockController } from "@/hooks/use-timelock-controller";
 const { Root, Slot, Input } = TextField;
 
 interface Props extends ComponentProps<typeof Root> {
@@ -50,6 +51,10 @@ const Search: FC<Props> = ({ input, onNavigate = () => { }, ...props }) => {
     pause: !isInputAddress,
   });
 
+  const { isTimelockController, isLoading: timelockLoading } = useTimelockController(
+    isInputAddress ? debouncedAddress as `0x${string}` : undefined
+  );
+
   const { isData, isManager, isManaged, hasMembership, isTarget, hasResults } =
     useMemo(() => {
       const result = {
@@ -63,25 +68,26 @@ const Search: FC<Props> = ({ input, onNavigate = () => { }, ...props }) => {
       };
       result.isData = !!data;
 
-      if (!data?.account) return result;
+      if (!data?.account && !isTimelockController) return result;
 
       result.isManager = !!data?.account?.asAccessManager;
       result.isManaged = !!data?.account?.asAccessManaged;
-      result.hasMembership = data?.account?.membership.length > 0;
-      result.isTarget = data?.account?.targettedBy.length > 0;
+      result.hasMembership = (data?.account?.membership?.length ?? 0) > 0;
+      result.isTarget = (data?.account?.targettedBy?.length ?? 0) > 0;
 
       result.hasResults =
         result.isManager ||
         result.isManaged ||
         result.hasMembership ||
-        result.isTarget;
+        result.isTarget ||
+        !!isTimelockController;
 
       return result;
-    }, [data]);
+    }, [data, isTimelockController]);
 
   useEffect(() => {
-    setOpen(isInputAddress && isData);
-  }, [isData, data, isInputAddress, address]);
+    setOpen(isInputAddress && (isData || !!isTimelockController));
+  }, [isData, data, isInputAddress, address, isTimelockController]);
 
   const clearAndReset = (entity: EntityInstance) => {
     const inputs = entity.id.split("/", 3);
@@ -140,6 +146,28 @@ const Search: FC<Props> = ({ input, onNavigate = () => { }, ...props }) => {
               />
               <Badge color="amber" ml="auto" size="1" variant="solid">
                 Manager
+              </Badge>
+            </DropdownMenu.Item>
+          )}
+          {isTimelockController && (
+            <DropdownMenu.Item
+              onClick={() =>
+                clearAndReset({
+                  type: AddressEntity.TimelockController,
+                  id: debouncedAddress,
+                })
+              }
+            >
+              <Address
+                hidePopup
+                addreth={{
+                  shortenAddress: false,
+                  actions: "none",
+                  address: debouncedAddress as `0x${string}`,
+                }}
+              />
+              <Badge color="blue" ml="auto" size="1" variant="solid">
+                Timelock
               </Badge>
             </DropdownMenu.Item>
           )}
@@ -257,7 +285,7 @@ const Search: FC<Props> = ({ input, onNavigate = () => { }, ...props }) => {
           className={cn(
             "animate-spin inline-block w-4 h-4 border-2 border-current border-t-transparent text-gray-600 rounded-full",
             {
-              invisible: !fetching,
+              invisible: !fetching && !timelockLoading,
             }
           )}
           role="status"

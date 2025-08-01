@@ -1,6 +1,7 @@
 const urqlEndpoint = {
   sepolia: process.env.NEXT_PUBLIC_URQL_ENDPOINT_SEPOLIA!,
   mainnet: process.env.NEXT_PUBLIC_URQL_ENDPOINT_MAINNET!,
+  rootstock: process.env.NEXT_PUBLIC_URQL_ENDPOINT_ROOTSTOCK || "https://api.studio.thegraph.com/query/46125/access-control-rootstock/version/latest",
 };
 
 const walletConnectcId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!;

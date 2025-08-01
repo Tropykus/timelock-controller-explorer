@@ -65,28 +65,11 @@ type Props = { children: ReactNode };
 
 const RootLayout: FC<Props> = ({ children }) => {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        {gaId && (
-          <>
-            <Script async src={gtag} />
-            <Script id="google-analytics">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${gaId}', {
-                  page_path: window.location.pathname
-                });
-              `}
-            </Script>
-          </>
-        )}
-      </head>
-      <body className={cn(silka.variable)} suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning={true}>
+      <body className={cn(silka.variable)} suppressHydrationWarning={true}>
         <main className="h-[100vh]">
           <WagmiConfig config={config}>
-            <Theme>{children}</Theme>
+            <Theme suppressHydrationWarning={true}>{children}</Theme>
           </WagmiConfig>
         </main>
       </body>

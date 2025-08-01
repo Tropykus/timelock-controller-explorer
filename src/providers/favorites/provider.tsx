@@ -28,9 +28,11 @@ export interface Favorites {
   [AddressEntity.AccessManaged]: Record<DisplayName, Address>;
   [AddressEntity.AccessManagerTarget]: Record<DisplayName, ID>;
   [AddressEntity.AccessManagerRoleMember]: Record<DisplayName, ID>;
+  [AddressEntity.TimelockController]: Record<DisplayName, Address>;
   [Entity.AccessManagerTargetFunction]: Record<DisplayName, ID>;
   [Entity.AccessManagerRole]: Record<DisplayName, ID>;
   [Entity.AccessManagerOperation]: Record<DisplayName, ID>;
+  [Entity.TimelockOperation]: Record<DisplayName, ID>;
 }
 
 type SupportedChainIdFavorites = {

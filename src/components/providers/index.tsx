@@ -13,14 +13,18 @@ interface Props {
   children: ReactNode;
 }
 
-const Theme: FC<Props> = ({ children }) => {
+const Theme: FC<Props & { suppressHydrationWarning?: boolean }> = ({ children, suppressHydrationWarning }) => {
   return (
     <ThemeProvider
       attribute="class"
       defaultTheme="light"
       disableTransitionOnChange
+      enableSystem={false}
+      storageKey="access-manager-theme"
     >
-      <Themes accentColor="blue">{children}</Themes>
+      <Themes accentColor="blue" suppressHydrationWarning={suppressHydrationWarning}>
+        {children}
+      </Themes>
     </ThemeProvider>
   );
 };
@@ -42,10 +46,14 @@ const Urql: FC<Props> = ({ children }) => {
 };
 
 const RainbowKit: FC<Props> = ({ children }) => {
-  const { theme } = useTheme();
+  const { theme, resolvedTheme } = useTheme();
+  
+  // Prevent hydration mismatch by using a stable theme on first render
+  const rainbowTheme = resolvedTheme === "dark" || theme === "dark" ? darkTheme() : undefined;
+  
   return (
     <RainbowKitProvider
-      theme={theme == "light" ? undefined : darkTheme()}
+      theme={rainbowTheme}
       chains={chains}
       showRecentTransactions={true}
     >

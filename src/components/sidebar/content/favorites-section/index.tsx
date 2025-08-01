@@ -4,13 +4,13 @@ import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { Flex, Heading } from "@radix-ui/themes";
 import { ReactNode, useState } from "react";
 
-interface Props<T extends Kind> {
+interface Props<T extends keyof Favorites> {
   name: string;
   data: Entry<Favorites[T]>[];
   onRender: (entry: Entry<Favorites[T]>) => ReactNode;
 }
 
-const FavoritesSection = <T extends Kind>({
+const FavoritesSection = <T extends keyof Favorites>({
   name,
   data,
   onRender,

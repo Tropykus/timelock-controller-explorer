@@ -5,6 +5,7 @@ import AccessManagerRole from "@/components/entities/access-manager-role";
 import AccessManagerMember from "@/components/entities/access-manager-role-member";
 import AccessManagerTarget from "@/components/entities/access-manager-target";
 import AccessManagerTargetFunction from "@/components/entities/access-manager-target-function";
+import TimelockController from "@/components/entities/timelock-controller";
 import { AddressEntity, Entity } from "@/types";
 import { FC } from "react";
 import { Address } from "viem";
@@ -135,6 +136,20 @@ const Explorer: FC<Props> = () => {
             style={{
               maxWidth: 480,
               minWidth: 480,
+              ...commonStyles,
+            }}
+          />
+        );
+      case AddressEntity.TimelockController:
+        return (
+          <TimelockController
+            {...commonProps}
+            key={id + depth}
+            address={id as Address}
+            shortenAddress={false}
+            style={{
+              maxWidth: 580,
+              minWidth: 580,
               ...commonStyles,
             }}
           />
