@@ -1,5 +1,5 @@
 "use client";
-import { Box, Table, Badge, Text, Flex, IconButton } from "@radix-ui/themes";
+import { Box, Table, Badge, Text, Flex, Button } from "@radix-ui/themes";
 import { FC } from "react";
 import * as React from "react";
 import { CopyIcon } from "@radix-ui/react-icons";
@@ -84,11 +84,13 @@ const DataCell: FC<{ data?: string; operationType?: string }> = ({ data, operati
 
   const [hasCopied, setHasCopied] = React.useState(false);
 
-  const handleCopy = React.useCallback(async () => {
+  const handleCopy = React.useCallback(async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     await copyToClipboard();
     setHasCopied(true);
     setTimeout(() => setHasCopied(false), 1500);
-  }, [copyToClipboard]);
+  }, [copyToClipboard, data]);
 
   // Show copy button for any data payload, even if it's just "0x"
   // The only case we don't show it is when data is completely missing/undefined
@@ -108,19 +110,28 @@ const DataCell: FC<{ data?: string; operationType?: string }> = ({ data, operati
   const displayText = data === "0x" ? "0x (empty)" : truncateData(data);
 
   return (
-    <Flex align="center" gap="1">
-      <Text size="1" style={{ fontFamily: 'monospace' }}>
+    <Flex align="center" gap="1" style={{ minWidth: '200px' }}>
+      <Text size="1" style={{ fontFamily: 'monospace', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis' }}>
         {displayText}
       </Text>
-      <IconButton
+      <Button
         size="1"
         variant="ghost"
         color={hasCopied ? "green" : "gray"}
         onClick={handleCopy}
+        onMouseDown={handleCopy} // Fallback for touch devices
         title={`Copy full payload data (${data.length} chars)`}
+        style={{ 
+          cursor: 'pointer', 
+          padding: '4px', 
+          minWidth: '24px', 
+          height: '24px',
+          flexShrink: 0
+        }}
+        type="button"
       >
         <CopyIcon width="12" height="12" />
-      </IconButton>
+      </Button>
     </Flex>
   );
 };
@@ -144,16 +155,16 @@ const OperationsList: FC<Props> = ({ operations, isLoading }) => {
   }
 
   return (
-    <Box>
-      <Table.Root>
+    <Box style={{ width: '100%', overflowX: 'auto' }}>
+      <Table.Root style={{ minWidth: '1200px' }}>
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeaderCell>Type</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Target/Account</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Value/Role</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Data Payload</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Time</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Tx Hash</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell style={{ width: '120px' }}>Type</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell style={{ width: '180px' }}>Target/Account</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell style={{ width: '120px' }}>Value/Role</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell style={{ width: '400px' }}>Data Payload</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell style={{ width: '150px' }}>Time</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell style={{ width: '180px' }}>Tx Hash</Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -192,7 +203,7 @@ const OperationsList: FC<Props> = ({ operations, isLoading }) => {
                 )}
                 {!operation.value && !operation.role && "-"}
               </Table.Cell>
-              <Table.Cell>
+              <Table.Cell style={{ width: '400px', minWidth: '400px' }}>
                 <DataCell data={operation.data} operationType={operation.type} />
               </Table.Cell>
               <Table.Cell>
