@@ -8,7 +8,11 @@ import Address from "@/components/address";
 import { useFavorites } from "@/providers/favorites";
 import { useEntities } from "@/providers/entities";
 import { useTimelockController } from "@/hooks/use-timelock-controller";
+import { useTimelockOperations } from "@/hooks/use-timelock-operations";
+import { useTimelockSigners } from "@/hooks/use-timelock-signers";
 import Account from "../as/account";
+import OperationsList from "./operations-list";
+import SignersList from "./signers-list";
 
 interface Props extends ComponentProps<typeof Card> {
   depth: number;
@@ -27,6 +31,8 @@ const TimelockController: FC<Props> = ({
 }) => {
   const { isTimelockController, isLoading, proposerRole, executorRole, cancellerRole, minDelay } = 
     useTimelockController(address);
+  const { operations, loading: operationsLoading } = useTimelockOperations();
+  const { signers, loading: signersLoading } = useTimelockSigners();
 
   const { splice } = useEntities();
   const favorites = useFavorites();
@@ -90,6 +96,7 @@ const TimelockController: FC<Props> = ({
               <Tabs.List>
                 <Tabs.Trigger value="info">Info</Tabs.Trigger>
                 <Tabs.Trigger value="roles">Roles</Tabs.Trigger>
+                <Tabs.Trigger value="signers">Signers</Tabs.Trigger>
                 <Tabs.Trigger value="operations">Operations</Tabs.Trigger>
               </Tabs.List>
               <Box pt="4" pb="2">
@@ -131,13 +138,17 @@ const TimelockController: FC<Props> = ({
                     </Box>
                   </Flex>
                 </Tabs.Content>
+                <Tabs.Content value="signers">
+                  <SignersList 
+                    signers={signers} 
+                    isLoading={signersLoading}
+                  />
+                </Tabs.Content>
                 <Tabs.Content value="operations">
-                  <Box>
-                    <Text size="2" color="gray">
-                      Operation history and pending operations would be displayed here.
-                      This requires additional contract calls to fetch operation data.
-                    </Text>
-                  </Box>
+                  <OperationsList 
+                    operations={operations} 
+                    isLoading={operationsLoading}
+                  />
                 </Tabs.Content>
               </Box>
             </Tabs.Root>

@@ -148,8 +148,8 @@ const Explorer: FC<Props> = () => {
             address={id as Address}
             shortenAddress={false}
             style={{
-              maxWidth: 580,
-              minWidth: 580,
+              maxWidth: 1200,
+              minWidth: 1200,
               ...commonStyles,
             }}
           />
